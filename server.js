@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -18,7 +19,7 @@ const memberSchema = new mongoose.Schema({
     email: String,
     phone_no: String,
     sex: String,
-    dob: String,
+    year: String,
     other: String
 })
 
@@ -34,7 +35,7 @@ app.post("/", async function(req, res){
     const email = req.body.email;
     const phone = req.body.number;
     const sex = req.body.sex;
-    const dob = req.body.dob;
+    const year = req.body.dob;
     const other = req.body.details.trim();
 
     const existingMember = await Member.findOne({ R_No: R_No });
@@ -42,7 +43,7 @@ app.post("/", async function(req, res){
     let errorMessage = "";
     if (existingMember) {
         errorMessage = "A member with the same Registration Number already exists.";
-    }else if(!name || !R_No || !email || !phone || !sex || !dob ){
+    }else if(!name || !R_No || !email || !phone || !sex || !year ){
         errorMessage = "All fields are mandatory";
     };
     if (errorMessage) {
@@ -55,7 +56,7 @@ app.post("/", async function(req, res){
             email: email,
             phone_no: phone,
             sex: sex,
-            dob: dob,
+            year: year,
             other: other
         });
         await member.save();
